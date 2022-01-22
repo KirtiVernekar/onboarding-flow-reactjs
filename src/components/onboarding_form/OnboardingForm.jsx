@@ -71,7 +71,7 @@ function OnboardingForm({page, setPage}) {
             });
         }
     }
-    // console.log(formData);
+    
     const handleCTA = (event, nextPage, currentStepData) => {
         event.preventDefault();
 
