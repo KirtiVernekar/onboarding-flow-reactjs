@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import './App.scss';
 import OnboardingForm from './components/onboarding_form/OnboardingForm';
 import logo from './icons/Eden-logo.png'
+import './App.scss';
 
 function App() {
   const [step, setStep] = useState(1);
@@ -12,10 +12,10 @@ function App() {
   }
 
   return (
-    <div className="App">
-        <div className="App__header">
-          <img src={logo} alt="Eden logo"/>
-          <h2>Eden</h2>
+    <div className="app">
+        <div className="app__header">
+          <img className="app__logo" src={logo} alt="Eden logo"/>
+          <h2 className="app__name">Eden</h2>
         </div>
         {/* Stepper */}
         <ol className="stepper">

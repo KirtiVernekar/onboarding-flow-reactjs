@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import './OnboardingForm.scss'
+import React, {useState} from 'react';
 import Title from '../title/Title'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faUser, faUsers } from '@fortawesome/free-solid-svg-icons'
 import input_validation from '../../helpers/input_validation';
+import './OnboardingForm.scss'
 
 function OnboardingForm({page, setPage}) {
     // const [formData, setFormData] = useState({  
@@ -13,7 +13,7 @@ function OnboardingForm({page, setPage}) {
     //     workspaceURL: '',
     //     planType: '',
     // });
-    
+
     // for adding input validation
     const [formData, setFormData] = useState({
         step1: {
@@ -45,7 +45,7 @@ function OnboardingForm({page, setPage}) {
       });
     const [errors, setErrors] = useState({});
 
-    const handleChange = (e, step) => {
+    const handleInputChange = (event, step) => {
         if(step === "step3"){
             console.log("in here");
             setFormData({
@@ -54,7 +54,7 @@ function OnboardingForm({page, setPage}) {
                     ...formData[step],
                     planType: {
                       ...formData[step]["planType"],
-                      value: e.target.id
+                      value: event.target.id
                     }
                   }
             })
@@ -63,30 +63,34 @@ function OnboardingForm({page, setPage}) {
                 ...formData,
                 [step]: {
                     ...formData[step],
-                    [e.target.id]: {
-                    ...formData[step][e.target.id],
-                    value: e.target.value
+                    [event.target.id]: {
+                    ...formData[step][event.target.id],
+                    value: event.target.value
                     }
                 }
-                // [e.target.id]: e.target.value
             });
         }
     }
-    console.log(formData);
-    const handleClick = (event, value, step) => {
+    // console.log(formData);
+    const handleCTA = (event, nextPage, currentStepData) => {
         event.preventDefault();
 
-        let isInvalid = input_validation(formData[step]);
-        if(isInvalid){
-            setErrors(isInvalid);
-            console.log("isInvalid", errors)
-        } 
-        if(errors == {}){
-            setPage(value);
+        let errMessages = input_validation(formData[currentStepData]);
+        if(errMessages.inValid){
+            setErrors(errMessages.message);
+        } else{
+            setPage(nextPage);
+            setErrors({});
         }
-        // setPage(value);
     }
-    // console.log("outside click", errors)
+
+    const handleLaunch = () => {
+        console.log("You've made it!");
+
+        //Further Improvement -
+        //Logic for registering user and redirecting to Home page
+    }
+
 
     switch(page) {
         case 1:
@@ -98,16 +102,28 @@ function OnboardingForm({page, setPage}) {
                     />
                     <form className='onboarding__form'>
                         <div className='onboarding__input'>
-                            <label id="fullName-label" for="fullName">Full Name</label>
-                            <input id="fullName" type="text" placeholder="Steve Jobs" value={formData.step1.fullName.value} onChange={e => handleChange(e, "step1")}/>
+                            <label id="fullName-label">Full Name</label>
+                            <input 
+                                id="fullName" 
+                                type="text" 
+                                placeholder="Steve Jobs" 
+                                value={formData.step1.fullName.value} 
+                                onChange={e => handleInputChange(e, "step1")}
+                            />
                             {errors && <p className="error">{errors.fullName}</p>}
                         </div>
                         <div className='onboarding__input'>
-                            <label id="displayName-label" for="displayName">Display Name</label>
-                            <input id="displayName" type="text" placeholder="Steve" value={formData.step1.displayName.value} onChange={e => handleChange(e, "step1")}/>
+                            <label id="displayName-label">Display Name</label>
+                            <input 
+                                id="displayName" 
+                                type="text" 
+                                placeholder="Steve" 
+                                value={formData.step1.displayName.value} 
+                                onChange={e => handleInputChange(e, "step1")}
+                            />
                             {errors && <p className="error">{errors.displayName}</p>}
                         </div>
-                        <button type="submit" onClick={e => handleClick(e, 2, "step1")}>Create Workspace</button>
+                        <button type="submit" onClick={e => handleCTA(e, 2, "step1")}>Create Workspace</button>
                     </form>
                 </div>
             );
@@ -120,18 +136,30 @@ function OnboardingForm({page, setPage}) {
                     />
                     <form className='onboarding__form'>
                         <div className='onboarding__input'>
-                            <label id="workspaceName-label" for="workspaceName">Workspace Name</label>
-                            <input id="workspaceName" type="text" placeholder="Eden" value={formData.step2.workspaceName.value} onChange={e => handleChange(e, "step2")}/>
+                            <label id="workspaceName-label">Workspace Name</label>
+                            <input 
+                                id="workspaceName" 
+                                type="text" 
+                                placeholder="Eden" 
+                                value={formData.step2.workspaceName.value} 
+                                onChange={e => handleInputChange(e, "step2")}
+                            />
                             {errors && <p className="error">{errors.workspaceName}</p>}
                         </div>
                         <div className='onboarding__input'>
-                            <label id="workspaceURL-label" for="workspaceURL">Workspace URL<span> (optional)</span></label>
-                            <div className='input-url'>
-                                <span className='fixed-url' id="basic-addon3">www.eden.com/</span>
-                                <input id="workspaceURL" type="text" placeholder="Example" value={formData.step2.workspaceURL.value} onChange={e => handleChange(e, "step2")}/>
+                            <label id="workspaceURL-label">Workspace URL<span> (optional)</span></label>
+                            <div className='input__url'>
+                                <span>www.eden.com/</span>
+                                <input 
+                                    id="workspaceURL" 
+                                    type="text" 
+                                    placeholder="Example" 
+                                    value={formData.step2.workspaceURL.value} 
+                                    onChange={e => handleInputChange(e, "step2")}
+                                />
                             </div>
                         </div>
-                        <button type="submit" onClick={e => handleClick(e, 3, "step2")}>Create Workspace</button>
+                        <button type="submit" onClick={e => handleCTA(e, 3, "step2")}>Create Workspace</button>
                     </form>
                 </div>
             );
@@ -144,19 +172,31 @@ function OnboardingForm({page, setPage}) {
                     />
                     <form className='onboarding__form'>
                         <div className='onboarding__selectType'>
-                            <div className={formData.step3.planType.value === 'self' ? 'onboarding__planType select' : 'onboarding__planType'} id="self" onClick={e => handleChange(e, "step3")}>
-                                <FontAwesomeIcon icon={faUser} className='onboarding__planType-icon'/>
+                            <div 
+                                className={ formData.step3.planType.value === 'self' 
+                                            ? 'onboarding__planType select' 
+                                            : 'onboarding__planType'} 
+                                id="self" 
+                                onClick={e => handleInputChange(e, "step3")}
+                            >
+                                <FontAwesomeIcon icon={faUser} className='onboarding__planType__icon'/>
                                 <h4>For myself</h4>
                                 <p>Write better. Think more clearly. Stay organized.</p>
                             </div>
-                            <div className={formData.step3.planType.value === 'team' ? 'onboarding__planType select' : 'onboarding__planType'} id="team" onClick={e => handleChange(e, "step3")}>
-                                <FontAwesomeIcon icon={faUsers} className='onboarding__planType-icon'/>
+                            <div 
+                                className={ formData.step3.planType.value === 'team' 
+                                            ? 'onboarding__planType select' 
+                                            : 'onboarding__planType'} 
+                                id="team" 
+                                onClick={e => handleInputChange(e, "step3")}
+                            >
+                                <FontAwesomeIcon icon={faUsers} className='onboarding__planType__icon'/>
                                 <h4>With my team</h4>
                                 <p>Wikis, docs, tasks & projects, all in one place.</p>
                             </div>
                         </div>
                         {errors && <p className="error">{errors.planType}</p>}
-                        <button type="submit" onClick={e => handleClick(e, 4, "step3")}>Create Workspace</button>
+                        <button type="submit" onClick={e => handleCTA(e, 4, "step3")}>Create Workspace</button>
                     </form>
                 </div>
             );
@@ -170,7 +210,7 @@ function OnboardingForm({page, setPage}) {
                         text={`Congratulations, ${formData.step1.displayName.value ? formData.step1.displayName.value : 'Eren'}!`} 
                         subtext="You have completed onboarding, you can start using Eden!"
                     />
-                    <button type="submit">Launch Eden</button>
+                    <button type="submit" onClick={handleLaunch}>Launch Eden</button>
                 </div>
             );
         default: 
@@ -184,4 +224,4 @@ function OnboardingForm({page, setPage}) {
     }
 }
 
-export default OnboardingForm
+export default OnboardingForm;

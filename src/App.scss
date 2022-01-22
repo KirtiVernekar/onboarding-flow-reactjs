@@ -5,12 +5,13 @@
   --primary-color: #5a4ad1;
   --grey-primary: #9ba0ab;
   --grey-secondary: #bdc5d6;
-  --border-color: #2415c9;
-  --black: #40434a;
+  --border-color: rgba(189,197,214,0.7);
+  --black-color: #40434a;
   --circle-size: clamp(1.1rem, 5rem, 2.2rem);
 }
 
-.App {
+
+.app {
   height: 100vh;
   background-color: #fff;
   display: flex;
@@ -20,14 +21,14 @@
   margin: auto;
 }
 
-.App__header {
+.app__header {
   display: flex;
   align-items: center;
 
-  img {
+  .app__logo {
     height: 2.2rem;
   }
-  h2 {
+  .app__name {
     font-size: 1.6rem;
     margin-left: 0.4rem;
   }
@@ -38,6 +39,10 @@
   grid-template-columns: repeat(4, 5.8rem);
   padding: 0;
   margin: 4rem auto 2rem;
+
+  @media screen and (max-width: 480px) {
+    margin: 3rem auto 1rem;
+  } 
 }
 
 .stepper__item {
@@ -57,7 +62,6 @@
       margin: 0 auto;
       z-index: 10;
   }
-
   &:after {
     content: "";
     position: relative;
@@ -83,7 +87,7 @@
   .stepper__title {
       position: relative;
       top: -50%;
-      color: var(--black);
+      color: var(--black-color);
       opacity: 0.85;
       font-size: 0.8rem;
       font-weight: 600;
@@ -96,11 +100,9 @@
       background-color: var(--primary-color);
       border: 1px solid transparent;
     }
-
     &:after {
       background-color: var(--primary-color);
     }
-
     .stepper__title {
       color: rgb(255, 255, 255);
       opacity: 1;
