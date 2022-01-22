@@ -1,4 +1,4 @@
-export default (input) => {  //input = formData[currentStepData]
+export const validate = (input) => {  //input = formData[currentStepData]
     let errors = {
         inValid: false,
         message: {}

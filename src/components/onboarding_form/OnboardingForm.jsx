@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Title from '../title/Title'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faUser, faUsers } from '@fortawesome/free-solid-svg-icons'
-import input_validation from '../../helpers/input_validation';
+import validate from '../../helpers/input_validation';
 import './OnboardingForm.scss'
 
 function OnboardingForm({page, setPage}) {
@@ -75,7 +75,7 @@ function OnboardingForm({page, setPage}) {
     const handleCTA = (event, nextPage, currentStepData) => {
         event.preventDefault();
 
-        let errMessages = input_validation(formData[currentStepData]);
+        let errMessages = validate(formData[currentStepData]);
         if(errMessages.inValid){
             setErrors(errMessages.message);
         } else{
